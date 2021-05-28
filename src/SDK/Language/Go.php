@@ -13,6 +13,26 @@ class Go extends Language
   ];
 
   /**
+   * @param string $version
+   * @return $this
+   */
+  public function setGoVersion($version)
+  {
+    $this->setParam('goVersion', $version);
+    return $this;
+  }
+
+  /**
+   * @param string $module
+   * @return $this
+   */
+  public function setGoModule($module)
+  {
+    $this->setParam('goModule', $module);
+    return $this;
+  }
+
+  /**
    * @return string
    */
   public function getName()
