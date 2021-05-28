@@ -1,0 +1,18 @@
+package {{ spec.title | caseLower }}
+
+type Client interface {
+  // SetEndpoint sets the default endpoint to which the Client connects to
+  SetEndPoint(endpoint string)
+  // SetSelfSigned sets the condition that specify if the Client should allow connections to a server using a self-signed certificate
+  setSelfSigned(status bool)
+  // AddHeader add a new custom header that the Client should send on each request
+  AddHeader(key, value string)
+{% for header in spec.global.headers %}
+{% if header.description %}
+  // Set{{ header.key | caseUcfirst }} {{header.description}}
+{% endif %}
+  func Set{{header.key | caseUcfirst}}(value string)
+{% endfor %}
+  // Call an API using Client
+  Call(method string, path string, header map[string]interface{}, params map[string] interface{}) (map[string]interface{}, error)
+}

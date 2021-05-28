@@ -76,12 +76,6 @@ class Go extends Language
     return [
       [
         'scope'         => 'default',
-        'destination'   => 'main.go',
-        'template'      => 'go/main.go.twig',
-        'minify'        => false,
-      ],
-      [
-        'scope'         => 'default',
         'destination'   => 'README.md',
         'template'      => 'go/README.md.twig',
         'minify'        => false,
@@ -126,6 +120,12 @@ class Go extends Language
         'scope'         => 'default',
         'destination'   => 'go.mod',
         'template'      => 'go/go.mod.twig',
+        'minify'        => false,
+      ],
+      [
+        'scope'         => 'default',
+        'destination'   => 'core.go',
+        'template'      => 'go/core.go.twig',
         'minify'        => false,
       ],
     ];

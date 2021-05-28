@@ -2,46 +2,54 @@ package {{ spec.title | caseLower }}
 
 import (
 	"encoding/json"
-  	"io/ioutil"
+  "io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 )
 
-// Client is the client struct to access {{ spec.title }} services
-type Client struct {
+// DefaultClient is the client struct to access {{ spec.title }} services
+type DefaultClient struct {
 	client     *http.Client
 	endpoint   string
 	headers    map[string]string
 	selfSigned bool
 }
 
-// SetEndpoint sets the default endpoint to which the Client connects to
-func (clt *Client) SetEndpoint(endpoint string) {
+// NewDefaultClient initializes a new Appwrite client with default fields
+func NewDefaultClient() Client {
+	return &Client{
+		client:   http.DefaultClient,
+		endpoint: "{{spec.endpoint}}",
+		headers: map[string]string{
+			"content-type":               "",
+			"x-sdk-version":              "{{ spec.title | caseDash }}:{{ language.name | caseLower }}:{{ sdk.version }}",
+{% for key,header in spec.global.defaultHeaders %}
+      "{{key}}" : "{{header}}",
+{% endfor %}
+		},
+		selfSigned: false,
+	}
+}
+
+func (clt *DefaultClient) SetEndpoint(endpoint string) {
 	clt.endpoint = endpoint
 }
 
-// SetSelfSigned sets the condition that specify if the Client should allow connections to a server using a self-signed certificate
-func (clt *Client) SetSelfSigned(status bool) {
+func (clt *DefaultClient) SetSelfSigned(status bool) {
 	clt.selfSigned = status
 }
 
-// AddHeader add a new custom header that the Client should send on each request
-func (clt *Client) AddHeader(key string, value string) {
+func (clt *DefaultClient) AddHeader(key string, value string) {
 	clt.headers[key] = value
 }
 {% for header in spec.global.headers %}
-
-{% if header.description %}
-// {{header.description}}
-{% endif %}
-func (clt *Client) Set{{header.key | caseUcfirst}}(value string) {
+func (clt *DefaultClient) Set{{header.key | caseUcfirst}}(value string) {
 	clt.headers["{{header.name}}"] = value
 }
 {% endfor %}
 
-// Call an API using Client
-func (clt *Client) Call(method string, path string, headers map[string]interface{}, params map[string]interface{}) (map[string]interface{}, error) {
+func (clt *DefaultClient) Call(method string, path string, headers map[string]interface{}, params map[string]interface{}) (map[string]interface{}, error) {
 	if clt.client == nil {
 		// Create HTTP client
 		clt.client = &http.Client{}
