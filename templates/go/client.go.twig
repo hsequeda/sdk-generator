@@ -18,14 +18,14 @@ type DefaultClient struct {
 
 // NewDefaultClient initializes a new Appwrite client with default fields
 func NewDefaultClient() Client {
-	return &Client{
+	return &DefaultClient{
 		client:   http.DefaultClient,
 		endpoint: "{{spec.endpoint}}",
 		headers: map[string]string{
 			"content-type":               "",
 			"x-sdk-version":              "{{ spec.title | caseDash }}:{{ language.name | caseLower }}:{{ sdk.version }}",
 {% for key,header in spec.global.defaultHeaders %}
-      "{{key}}" : "{{header}}",
+      "{{key}}": "{{header}}",
 {% endfor %}
 		},
 		selfSigned: false,
