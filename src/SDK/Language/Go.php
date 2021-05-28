@@ -153,6 +153,9 @@ class Go extends Language
       case self::TYPE_ARRAY:
         return '[]interface{}';
         break;
+      case self::TYPE_OBJECT:
+        return 'interface{}';
+        break;
     }
 
     return $type;
