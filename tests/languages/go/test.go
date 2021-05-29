@@ -1,9 +1,6 @@
 package main
 
-import (
-	appwrite "../../sdks/go"
-	// appwrite "../../../examples/go"
-)
+import appwrite "github.com/appwrite/go-sdk"
 
 func main() {
 	defaultClient := appwrite.NewDefaultClient()
